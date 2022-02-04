@@ -152,7 +152,7 @@ class PropertyPresenceVertexQuery(_VertexQuery):
 
     def to_message(self):
         return proto.VertexQuery(
-            range=proto.PropertyPresenceVertexQuery(
+            property_presence=proto.PropertyPresenceVertexQuery(
                 name=proto.Identifier(value=self._name),
             ),
         )
@@ -166,7 +166,7 @@ class PropertyValueVertexQuery(_VertexQuery):
 
     def to_message(self):
         return proto.VertexQuery(
-            range=proto.PropertyValueVertexQuery(
+            property_value=proto.PropertyValueVertexQuery(
                 name=proto.Identifier(value=self._name),
                 value=json.dumps(self._value),
             ),
@@ -182,7 +182,7 @@ class PipePropertyPresenceVertexQuery(_VertexQuery):
 
     def to_message(self):
         return proto.VertexQuery(
-            range=proto.PipePropertyPresenceVertexQuery(
+            pipe_property_presence=proto.PipePropertyPresenceVertexQuery(
                 inner=self._inner.to_message(),
                 name=proto.Identifier(value=self._name),
                 exists=self._exists,
@@ -200,7 +200,7 @@ class PipePropertyValueVertexQuery(_VertexQuery):
 
     def to_message(self):
         return proto.VertexQuery(
-            range=proto.PropertyValueVertexQuery(
+            pipe_property_value=proto.PropertyValueVertexQuery(
                 inner=self._inner.to_message(),
                 name=proto.Identifier(value=self._name),
                 value=json.dumps(self._value),
