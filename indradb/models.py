@@ -139,10 +139,10 @@ class _VertexQuery(_BaseModel):
         return PipePropertyPresenceVertexQuery(self, name, False)
 
     def with_property_equal_to(self, name, value):
-        PipePropertyValueVertexQuery(self, name, value, True)
+        return PipePropertyValueVertexQuery(self, name, value, True)
 
     def with_property_not_equal_to(self, name, value):
-        PipePropertyValueVertexQuery(self, name, value, False)
+        return PipePropertyValueVertexQuery(self, name, value, False)
 
 class PropertyPresenceVertexQuery(_VertexQuery):
     __slots__ = ["_name"]
@@ -168,7 +168,7 @@ class PropertyValueVertexQuery(_VertexQuery):
         return proto.VertexQuery(
             property_value=proto.PropertyValueVertexQuery(
                 name=proto.Identifier(value=self._name),
-                value=json.dumps(self._value),
+                value=proto.Json(value=json.dumps(self._value)),
             ),
         )
 
@@ -192,7 +192,7 @@ class PipePropertyPresenceVertexQuery(_VertexQuery):
 class PipePropertyValueVertexQuery(_VertexQuery):
     __slots__ = ["_inner", "_name", "_value", "_equal"]
 
-    def __init__(self, inner, name, value):
+    def __init__(self, inner, name, value, equal):
         self._inner = inner
         self._name = name
         self._value = value
@@ -200,10 +200,10 @@ class PipePropertyValueVertexQuery(_VertexQuery):
 
     def to_message(self):
         return proto.VertexQuery(
-            pipe_property_value=proto.PropertyValueVertexQuery(
+            pipe_property_value=proto.PipePropertyValueVertexQuery(
                 inner=self._inner.to_message(),
                 name=proto.Identifier(value=self._name),
-                value=json.dumps(self._value),
+                value=proto.Json(value=json.dumps(self._value)),
                 equal=self._equal,
             ),
         )
